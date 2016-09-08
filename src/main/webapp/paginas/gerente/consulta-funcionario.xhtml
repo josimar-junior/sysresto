@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/template/layout-padrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="body">
+		<h:form id="form">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton value="Pesquisar"
+						action="#{consultaFuncionarioBean.pesquisar}" update="@form" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Cadastrar"
+						outcome="/paginas/gerente/cadastro-funcionario.xhtml" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:spacer height="10px" />
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<h:panelGrid columns="2">
+				<p:outputLabel value="Nome:" for="nome" />
+				<p:inputText id="nome" size="50"
+					value="#{consultaFuncionarioBean.funcionarioFilter.nome}" />
+				<p:outputLabel value="CPF:" for="cpf" />
+				<p:inputMask id="cpf" size="14" mask="999.999.999-99"
+					value="#{consultaFuncionarioBean.funcionarioFilter.cpf}" />
+				<p:spacer height="5px" />
+			</h:panelGrid>
+
+			<p:dataTable id="idTable" value="#{consultaFuncionarioBean.funcionarios}"
+				var="funcionario" paginator="true" rows="5"
+				style="margin-right: 10px;" rowsPerPageTemplate="5, 10, 15"
+				lazy="true"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				currentPageReportTemplate="{currentPage} de {totalPages}"
+				paginatorPosition="bottom"
+				emptyMessage="Nenhum registro encontrado!" filterEvent="enter"
+				widgetVar="tableData"
+				rowStyleClass="#{empty row or row mod 2 ne 0 ? 'even-row' : 'odd-row'}"
+				rowIndexVar="row">
+				<f:facet name="header">Lista dos Funcionários</f:facet>
+				<f:facet name="footer">Fim da Lista</f:facet>
+
+				<p:column headerText="Nome" style="width: 100px;">
+					<p:outputLabel value="#{funcionario.nome}" />
+				</p:column>
+				<p:column headerText="CPF" style="text-align: center; width: 50px;">
+					<p:outputLabel value="#{funcionario.cpf}" />
+				</p:column>
+				<p:column headerText="Data de Nascimento"
+					style="text-align: center; width: 50px;">
+					<p:outputLabel value="#{funcionario.dataNascimento}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</p:outputLabel>
+				</p:column>
+
+				<p:column headerText="E-mail"
+					style="text-align: center; width: 50px;">
+					<p:outputLabel value="#{funcionario.email}" />
+				</p:column>
+
+				<p:column headerText="Perfil"
+					style="text-align: center; width: 50px;">
+					<p:outputLabel value="#{funcionario.perfil.descricao}" />
+				</p:column>
+
+				<p:column headerText="Status"
+					style="text-align: center; width: 50px;">
+					<h:commandLink action="#{consultaFuncionarioBean.modificarStatus}">
+						<h:graphicImage library="imagens"
+							name="ativo_#{funcionario.status}.png" style="width: 24px" />
+						<f:setPropertyActionListener value="#{funcionario}"
+							target="#{consultaFuncionarioBean.funcionario}" />
+					</h:commandLink>
+				</p:column>
+
+				<p:column headerText="Editar"
+					style="text-align: center; width: 10px;">
+					<p:button rendered="#{funcionario.status eq 'ATIVO'}"
+						outcome="/paginas/gerente/cadastro-funcionario.xhtml"
+						icon="ui-icon-pencil" title="Editar">
+						<f:param name="funcionario" value="#{funcionario.id}" />
+					</p:button>
+
+					<p:button rendered="#{funcionario.status eq 'INATIVO'}"
+						disabled="true" icon="ui-icon-pencil"
+						title="Funcionário está inativo!">
+
+					</p:button>
+				</p:column>
+				<p:column headerText="Excluir"
+					style="text-align: center; width: 10px;">
+					<p:commandButton rendered="#{funcionario.status eq 'ATIVO'}"
+						icon="ui-icon-trash" title="Excluir"
+						oncomplete="PF('showConfirmDialog').show()" process="@this"
+						update=":form:showConfirm">
+						<f:setPropertyActionListener value="#{funcionario}"
+							target="#{consultaFuncionarioBean.funcionarioSelecionado}" />
+					</p:commandButton>
+
+					<p:commandButton rendered="#{funcionario.status eq 'INATIVO'}"
+						disabled="true" icon="ui-icon-trash"
+						title="Funcionário está inativo!">
+
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+
+			<p:confirmDialog header="Exclusão do Funcionário"
+				message="tem certeza que deseja excluir o funcionário #{consultaFuncionarioBean.funcionarioSelecionado.nome}?"
+				widgetVar="showConfirmDialog" id="showConfirm" showEffect="fade"
+				hideEffect="explode">
+
+				<p:commandButton value="Não"
+					onclick="PF('showConfirmDialog').hide(); return false;"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				<p:commandButton value="Sim"
+					oncomplete="PF('showConfirmDialog').hide()"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+					action="#{consultaFuncionarioBean.remover}" process="@this"
+					update=":form:idTable" />
+			</p:confirmDialog>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

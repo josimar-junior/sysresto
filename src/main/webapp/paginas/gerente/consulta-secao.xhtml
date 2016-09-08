@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/template/layout-padrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="body">
+		<h:form id="form">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton value="Pesquisar"
+						action="#{consultaSecaoBean.pesquisar}" update="@form" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Cadastrar"
+						outcome="/paginas/gerente/cadastro-secao.xhtml" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:spacer height="10" />
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<h:panelGrid columns="2">
+				<p:outputLabel value="Descrição:" for="descricao" />
+				<p:inputText id="descricao" size="50"
+					value="#{consultaSecaoBean.secaoFilter.descricao}" />
+			</h:panelGrid>
+			
+			<p:spacer height="10" />
+
+			<p:dataTable id="idTable" value="#{consultaSecaoBean.secoes}"
+				var="secao" paginator="true" rows="5"
+				style="margin-right: 10px;" rowsPerPageTemplate="5, 10, 15"
+				lazy="true"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				currentPageReportTemplate="{currentPage} de {totalPages}"
+				paginatorPosition="bottom"
+				emptyMessage="Nenhum registro encontrado!" filterEvent="enter"
+				widgetVar="tableData"
+				rowStyleClass="#{empty row or row mod 2 ne 0 ? 'even-row' : 'odd-row'}"
+				rowIndexVar="row">
+				<f:facet name="header">Lista das Seções</f:facet>
+				<f:facet name="footer">Fim da Lista</f:facet>
+
+				<p:column headerText="Descrição" style="width: 100px;">
+					<p:outputLabel value="#{secao.descricao}" />
+				</p:column>
+				
+				<p:column headerText="Status"
+					style="text-align: center; width: 50px;">
+					<h:commandLink action="#{consultaSecaoBean.modificarStatus}">
+						<h:graphicImage library="imagens"
+							name="ativo_#{secao.status}.png" style="width: 24px" />
+						<f:setPropertyActionListener value="#{secao}"
+							target="#{consultaSecaoBean.secao}" />
+					</h:commandLink>
+				</p:column>
+
+				<p:column headerText="Editar"
+					style="text-align: center; width: 10px;">
+					<p:button rendered="#{secao.status eq 'ATIVO'}"
+						outcome="/paginas/gerente/cadastro-secao.xhtml"
+						icon="ui-icon-pencil" title="Editar">
+						<f:param name="secao" value="#{secao.id}" />
+					</p:button>
+
+					<p:button rendered="#{secao.status eq 'INATIVO'}"
+						disabled="true" icon="ui-icon-pencil"
+						title="Seção está inativa!">
+
+					</p:button>
+				</p:column>
+				<p:column headerText="Excluir"
+					style="text-align: center; width: 10px;">
+					<p:commandButton rendered="#{secao.status eq 'ATIVO'}"
+						icon="ui-icon-trash" title="Excluir"
+						oncomplete="PF('showConfirmDialog').show()" process="@this"
+						update=":form:showConfirm">
+						<f:setPropertyActionListener value="#{secao}"
+							target="#{consultaSecaoBean.secaoSelecionada}" />
+					</p:commandButton>
+
+					<p:commandButton rendered="#{secao.status eq 'INATIVO'}"
+						disabled="true" icon="ui-icon-trash"
+						title="Seção está inativa!">
+
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+
+			<p:confirmDialog header="Exclusão da Seção"
+				message="tem certeza que deseja excluir a seção #{consultaSecaoBean.secaoSelecionada.descricao}?"
+				widgetVar="showConfirmDialog" id="showConfirm" showEffect="fade"
+				hideEffect="explode">
+
+				<p:commandButton value="Não"
+					onclick="PF('showConfirmDialog').hide(); return false;"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				<p:commandButton value="Sim"
+					oncomplete="PF('showConfirmDialog').hide()"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+					action="#{consultaSecaoBean.remover}" process="@this"
+					update=":form:idTable" />
+			</p:confirmDialog>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

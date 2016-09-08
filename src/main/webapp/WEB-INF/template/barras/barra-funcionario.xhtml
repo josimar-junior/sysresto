@@ -1,0 +1,19 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:toolbar>
+		<p:toolbarGroup>
+			<p:outputLabel value="Funcionário" style="font-size: 20px; color: white;"/>
+		</p:toolbarGroup>
+		<p:toolbarGroup align="right">
+			<p:button value="Novo" outcome="/paginas/gerente/cadastro-funcionario.xhtml"/>
+			<p:spacer width="10px" />
+			<p:commandButton value="#{cadastroFuncionarioBean.funcionario.id == null ? 'Salvar' : 'Atualizar'}" action="#{cadastroFuncionarioBean.salvar}"/>
+			<p:separator />
+			<p:button value="Consultar" outcome="/paginas/gerente/consulta-funcionario.xhtml?faces-redirect=true"/>
+		</p:toolbarGroup>
+	</p:toolbar>
+</ui:composition>

@@ -1,0 +1,21 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:toolbar>
+		<p:toolbarGroup>
+			<p:outputLabel value="Pedido" style="font-size: 20px; color: white;"/>
+		</p:toolbarGroup>
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Salvar" action="#{cadastroPedidoBean.salvar}" update="@form"/>
+			<p:commandButton value="Finalizar Pedido" action="#{finalizaPedidoBean.finalizarPedido}"
+			process="@form" update="@form"/>
+			<p:commandButton value="Cancelar" action="#{cancelaPedidoBean.cancelarPedido}" process="@this"
+			update="@form"/>
+			<p:separator />
+			<p:button value="Consultar"/>
+		</p:toolbarGroup>
+	</p:toolbar>
+</ui:composition>

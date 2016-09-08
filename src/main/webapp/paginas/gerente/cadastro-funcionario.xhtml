@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/template/layout-padrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<o:viewParam name="funcionario"
+			value="#{cadastroFuncionarioBean.funcionario}" />
+	</f:metadata>
+
+	<ui:define name="body">
+
+		<h:form prependId="false">
+			<ui:include src="/WEB-INF/template/barras/barra-funcionario.xhtml" />
+			<p:messages autoUpdate="true" closable="true" />
+			<p:spacer height="10" />
+			<h:panelGrid columns="3">
+				<h:panelGroup>
+					<p:outputLabel value="Nome:" for="nome" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+				<h:panelGroup>
+					<p:outputLabel value="CPF:" for="cpf" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+				<p:outputLabel value="Data de Nascimento:" for="data-nascimento" />
+
+				<p:inputText id="nome" size="40" label="Nome"
+					value="#{cadastroFuncionarioBean.funcionario.nome}" />
+				<p:inputMask id="cpf" mask="999.999.999-99"
+					value="#{cadastroFuncionarioBean.funcionario.cpf}" />
+				<p:calendar id="data-nascimento"
+					value="#{cadastroFuncionarioBean.funcionario.dataNascimento}"
+					label="Data de Nascimento" locale="pt_BR" pattern="dd/MM/yyyy"
+					navigator="true" mask="99/99/9999" />
+
+				<h:panelGroup>
+					<p:outputLabel value="Login:" for="login" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+				<h:panelGroup>
+					<p:outputLabel value="Senha:" for="senha" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+				<h:panelGroup>
+					<p:outputLabel value="Confirmar senha:" for="confirmar-senha" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+
+				<p:inputText id="login" size="40" label="Login"
+					value="#{cadastroFuncionarioBean.funcionario.login}" />
+				<p:password id="senha" label="Senha"
+					value="#{cadastroFuncionarioBean.funcionario.senha}"
+					feedback="true" match="confirmar-senha" redisplay="true"
+					promptLabel="Digite uma senha" weakLabel="Senha fraca"
+					goodLabel="Senha boa" strongLabel="Senha forte" />
+
+				<p:password id="confirmar-senha" requiredMessage="Confirme a senha"
+					redisplay="true" />
+
+				<h:panelGroup>
+					<p:outputLabel value="Perfil:" for="perfil" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+				<h:panelGroup>
+					<p:outputLabel value="Status:" for="status" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+				<p:outputLabel value="E-mail:" for="email" />
+
+				<p:selectOneMenu id="perfil" label="Perfil"
+					value="#{cadastroFuncionarioBean.funcionario.perfil}">
+					<f:selectItem itemLabel="Selecione o perfil" />
+					<f:selectItems value="#{cadastroFuncionarioBean.perfis}"
+						var="perfil" itemLabel="#{perfil.descricao}" itemValue="#{perfil}" />
+				</p:selectOneMenu>
+				<p:selectOneRadio id="status" label="Status"
+					value="#{cadastroFuncionarioBean.funcionario.status}">
+					<f:selectItems value="#{cadastroFuncionarioBean.status}"
+						var="status" itemLabel="#{status.descricao}" itemValue="#{status}" />
+				</p:selectOneRadio>
+				<p:inputText id="email" label="E-mail"
+					value="#{cadastroFuncionarioBean.funcionario.email}" />
+
+			</h:panelGrid>
+		</h:form>
+		<p:outputLabel value="* campos obrigatórios"
+			styleClass="campo-obrigatorio" />
+
+	</ui:define>
+</ui:composition>

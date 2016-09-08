@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:metadata>
+	<f:viewParam name="dummy" />
+	<f:event listener="#{loginBean.preRender}" type="preRenderView" />
+</f:metadata>
+
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<h:outputStylesheet library="css" name="login.css" />
+	<h:outputStylesheet library="css" name="animate.css" />
+<!-- 	<h:outputStylesheet library="css" name="style.css" /> -->
+	<link rel="shortcut icon" type="image/x-icon"
+		href="#{facesContext.externalContext.requestContextPath}/resources/imagens/logo.png" />
+	<title>Login</title>
+</h:head>
+
+<h:body>
+	<div id="login-frame" class="animated bounceInUp">
+		<h:panelGrid columns="2">
+			<h:panelGroup>
+				<div style="text-align: left;">
+					<h:graphicImage library="imagens" name="logo.png" styleClass="logo" />
+				</div>
+			</h:panelGroup>
+
+			<h:panelGrid styleClass="nome-logo" columns="1">
+				<p:outputLabel value="SysRestô" styleClass="sysRestoLabelTop" />
+				<div id="versao-sistema">
+					<h5>Versão: 1.0 build 1</h5>
+				</div>
+
+			</h:panelGrid>
+
+		</h:panelGrid>
+		<p:messages id="messages" autoUpdate="true" closable="true" />
+		<h:panelGrid columns="2">
+			<h:panelGroup>
+				<h:form id="frm" prependId="false"
+					onsubmit="action='#{request.contextPath}/j_spring_security_check';">
+
+					<h:panelGrid styleClass="grid-table" columns="1">
+						<p:outputLabel value="Login" for="j_username" />
+						<p:inputText id="j_username" placeholder="Login" size="25"
+							value="#{loginBean.login}" />
+
+						<p:outputLabel value="Senha" for="j_password" />
+						<p:password id="j_password" placeholder="Senha" size="25" />
+
+						<p:commandButton value="Acessar" ajax="false"
+							action="#{loginBean.acessar}"
+							style="width: 100%; margin: 20px 0px 20px 0px" />
+					</h:panelGrid>
+				</h:form>
+			</h:panelGroup>
+
+			<h:panelGroup>
+				<h:panelGrid columns="2">
+
+					<hr size="150" width="0" align="left" />
+					<h:panelGroup>
+						<p:outputLabel style="color: #1F1913; font-weight: bold;"
+							value="LICENCIADO PARA:" />
+						<br />
+						<br />
+						<p:outputLabel value="SABOREAR" />
+						<br />
+						<p:outputLabel value="CNPJ: 25.866.053/0001-10" />
+						<br />
+						<p:outputLabel value="Nº de Lojas: 1" />
+						<br />
+						<p:outputLabel value="Nº de Usuários: 3" />
+					</h:panelGroup>
+				</h:panelGrid>
+			</h:panelGroup>
+		</h:panelGrid>
+	</div>
+	<footer> <p:outputLabel
+		value="JLMP©2015. Todos os Direitos Reservados" /> </footer>
+
+</h:body>
+</html>

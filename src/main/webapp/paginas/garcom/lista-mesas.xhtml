@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/template/layout-padrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="body">
+
+		<h:form prependId="false">
+			<p:messages autoUpdate="true" closable="true"/>
+
+			<ui:repeat var="mesa" value="#{consultaMesaBean.mesas}">
+
+				<p:panel style="text-align: center; float: left;"
+					rendered="#{mesa.statusMesa eq 'LIVRE'}">
+
+					<p:link outcome="/paginas/garcom/cadastro-pedido.xhtml">
+						<h:graphicImage width="150" library="imagens"
+							title="Mesa de Número #{mesa.numeroMesa}"
+							name="mesa.fw-#{mesa.statusMesa}.png" />
+
+						<f:param name="mesa" value="#{mesa.id}" />
+
+					</p:link>
+					<br />
+					<p:outputLabel value="Mesa #{mesa.numeroMesa}" />
+
+				</p:panel>
+
+				<p:panel style="text-align: center; float: left;"
+					rendered="#{mesa.statusMesa eq 'OCUPADA'}">
+					<p:commandLink action="#{consultaMesaBean.pesquisarPedidoMesa}"
+						oncomplete="PF('itensPedido').show();" update=":frm">
+						<h:graphicImage library="imagens" title="Mesa de Número #{mesa.numeroMesa}"
+							name="mesa.fw-#{mesa.statusMesa}.png" width="150" />
+						<f:setPropertyActionListener value="#{mesa}"
+							target="#{consultaMesaBean.mesaSelecionada}" />
+
+					</p:commandLink>
+					<br />
+					<p:outputLabel value="Mesa #{mesa.numeroMesa}" />
+				</p:panel>
+
+			</ui:repeat>
+
+
+		</h:form>
+
+		<h:form id="frm">
+			<p:dialog header="Itens do pedido" id="itensPedido"
+				widgetVar="itensPedido" closeOnEscape="true" resizable="false"
+				showEffect="clip" hideEffect="clip" draggable="false" width="1000"
+				height="400">
+
+				<h:panelGrid columns="1">
+					<p:link value="Editar Pedido da Mesa #{consultaMesaBean.pedidoSelecionado.mesa.numeroMesa}"
+						outcome="/paginas/garcom/cadastro-pedido.xhtml" >
+						<f:param name="pedido"
+							value="#{consultaMesaBean.pedidoSelecionado.id}"/>
+					</p:link>
+
+					<p:spacer height="20" width="0" />
+
+					<p:dataTable id="idTable"
+						value="#{consultaMesaBean.pedidoSelecionado.itens}" var="item"
+						paginator="true" rows="5" style="margin-right: 10px;"
+						rowsPerPageTemplate="5, 10, 15" lazy="true"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						currentPageReportTemplate="{currentPage} de {totalPages}"
+						paginatorPosition="bottom"
+						emptyMessage="Nenhum registro encontrado!" filterEvent="enter"
+						widgetVar="tableData"
+						rowStyleClass="#{empty row or row mod 2 ne 0 ? 'even-row' : 'odd-row'}"
+						rowIndexVar="row">
+						<f:facet name="header">Itens pedidos</f:facet>
+						<f:facet name="footer">Fim da Lista</f:facet>
+
+						<p:column headerText="Produto" style="width: 100px;">
+							<p:outputLabel value="#{item.produto.nome}" />
+						</p:column>
+						<p:column headerText="Quantidade"
+							style="text-align: center; width: 100px;">
+							<p:outputLabel value="#{item.quantidade}" />
+						</p:column>
+						<p:column headerText="Valor Total"
+							style="text-align: right; width: 100px;">
+							<p:outputLabel value="#{item.valorTotal}">
+								<f:convertNumber type="currency" />
+							</p:outputLabel>
+						</p:column>
+						
+						<p:columnGroup type="footer">
+					<p:row>
+						<p:column colspan="2" footerText="Subtotal"
+							style="text-align: right" />
+						<p:column style="text-align: right">
+							<f:facet name="footer">
+								<h:outputText value="#{consultaMesaBean.pedidoSelecionado.valorTotal}">
+									<f:convertNumber type="currency" />
+								</h:outputText>
+							</f:facet>
+						</p:column>
+					</p:row>
+				</p:columnGroup>
+
+					</p:dataTable>
+
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

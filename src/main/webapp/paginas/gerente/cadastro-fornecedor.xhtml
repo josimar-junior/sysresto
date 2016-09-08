@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/template/layout-padrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<o:viewParam name="fornecedor"
+			value="#{cadastroFornecedorBean.fornecedor}" />
+	</f:metadata>
+
+	<ui:define name="body">
+
+		<h:form prependId="false">
+			<ui:include src="/WEB-INF/template/barras/barra-fornecedor.xhtml" />
+			<p:messages autoUpdate="true" closable="true" />
+			<p:spacer height="10" />
+			<h:panelGrid columns="4">
+				<h:panelGroup>
+					<p:outputLabel value="Razão Social:" for="razao-social" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+
+				<h:panelGroup>
+					<p:outputLabel value="Nome Fantasia:" for="nome-fantasia" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+
+				<h:panelGroup>
+					<p:outputLabel value="CNPJ:" for="cnpj" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+
+				<h:panelGroup>
+					<p:outputLabel value="Inscrição Estadual:" for="inscricao-estadual" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+
+				<p:inputText id="razao-social" label="Razão Social" size="40"
+					value="#{cadastroFornecedorBean.fornecedor.razaoSocial}" />
+				<p:inputText id="nome-fantasia" label="Nome Fantasia" size="40"
+					value="#{cadastroFornecedorBean.fornecedor.nomeFantasia}" />
+				<p:inputMask id="cnpj" mask="99.999.999/9999-99" size="30"
+					value="#{cadastroFornecedorBean.fornecedor.CNPJ}" />
+				<p:inputText id="inscricao-estadual" label="Inscrição Estadual:"
+					size="20"
+					value="#{cadastroFornecedorBean.fornecedor.inscricaoEstadual}" />
+
+				<h:panelGroup>
+					<p:outputLabel value="Telefone:" for="telefone" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+
+				<p:outputLabel value="E-mail:" for="email" />
+
+				<h:panelGroup>
+					<p:outputLabel value="UF:" for="uf" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+
+				<h:panelGroup>
+					<p:outputLabel value="Cidade:" for="cidade" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+
+
+
+				<p:inputMask id="telefone" label="Telefone" mask="(99)99999-9999"
+					value="#{cadastroFornecedorBean.fornecedor.telefone}" size="15" />
+				<p:inputText id="email" label="E-mail" size="30"
+					value="#{cadastroFornecedorBean.fornecedor.email}" />
+
+				<p:selectOneMenu id="uf" label="UF"
+					value="#{cadastroFornecedorBean.fornecedor.endereco.uf}">
+					<f:selectItems
+						value="#{cadastroFornecedorBean.siglaEstadoBrasileiros}"
+						var="sigla" itemLabel="#{sigla}" itemValue="#{sigla}" />
+				</p:selectOneMenu>
+
+				<p:inputText id="cidade" label="Cidade" size="40"
+					value="#{cadastroFornecedorBean.fornecedor.endereco.cidade}" />
+
+				<h:panelGroup>
+					<p:outputLabel value="Bairro:" for="bairro" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+
+				<h:panelGroup>
+					<p:outputLabel value="CEP:" for="cep" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+
+				<p:outputLabel value="Complemento:" for="complemento" />
+
+
+				<h:panelGroup>
+					<p:outputLabel value="Logradouro:" for="logradouro" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+
+				<p:inputText id="bairro" label="Bairro" size="40"
+					value="#{cadastroFornecedorBean.fornecedor.endereco.bairro}" />
+				<p:inputMask id="cep" label="CEP" mask="99999-999" size="30"
+					value="#{cadastroFornecedorBean.fornecedor.endereco.cep}" />
+				<p:inputText id="complemento" label="Complemento" size="30"
+					value="#{cadastroFornecedorBean.fornecedor.endereco.complemento}" />
+				<p:inputText id="logradouro" label="Logradouro" size="40"
+					value="#{cadastroFornecedorBean.fornecedor.endereco.logradouro}" />
+
+				<p:outputLabel value="Número:" for="numero" />
+
+				<h:panelGroup>
+					<p:outputLabel value="Status:" for="status" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+				<h:inputHidden />
+				<h:inputHidden />
+				<p:inputText id="numero" label="Número" size="15"
+					value="#{cadastroFornecedorBean.fornecedor.endereco.numero}" />
+
+				<p:selectOneRadio id="status" label="Status"
+					value="#{cadastroFornecedorBean.fornecedor.status}">
+					<f:selectItems value="#{cadastroFornecedorBean.status}"
+						var="status" itemLabel="#{status.descricao}" itemValue="#{status}" />
+				</p:selectOneRadio>
+
+			</h:panelGrid>
+		</h:form>
+		<p:outputLabel value="* campos obrigatórios"
+			styleClass="campo-obrigatorio-fornecedor" />
+
+	</ui:define>
+</ui:composition>

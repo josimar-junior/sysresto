@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/template/layout-padrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<o:viewParam name="produto" value="#{cadastroProdutoBean.produto}" />
+	</f:metadata>
+
+	<ui:define name="body">
+
+		<h:form prependId="false">
+			<ui:include src="/WEB-INF/template/barras/barra-produto.xhtml" />
+			<p:messages autoUpdate="true" closable="true" />
+			<p:spacer height="10" />
+			<h:panelGrid columns="4">
+
+				<h:panelGroup>
+					<p:outputLabel value="Código de Barras:" for="codigo-barras" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+
+				<h:panelGroup>
+					<p:outputLabel value="Nome:" for="nome" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+
+				<h:panelGroup>
+					<p:outputLabel value="Marca:" for="marca" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+
+				<h:panelGroup>
+					<p:outputLabel value="Tipo de Unidade:" for="unidade" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+
+				<p:inputText id="codigo-barras" label="Código de Barras" size="20"
+					value="#{cadastroProdutoBean.produto.codigoBarras}" />
+				<p:inputText id="nome" label="Nome" size="30"
+					value="#{cadastroProdutoBean.produto.nome}" />
+				<p:inputText id="marca" label="Marca" size="30"
+					value="#{cadastroProdutoBean.produto.marca}" />
+
+				<p:selectOneMenu id="unidade" label="Tipo de Unidade"
+					value="#{cadastroProdutoBean.produto.tipoUnidade}">
+					<f:selectItem itemLabel="Selecione a Unidade" />
+					<f:selectItems value="#{cadastroProdutoBean.unidades}"
+						var="unidade" itemLabel="#{unidade.descricao}"
+						itemValue="#{unidade}" />
+				</p:selectOneMenu>
+
+				<h:panelGroup>
+					<p:outputLabel value="Seção:" for="secao" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+
+				<h:panelGroup>
+					<p:outputLabel value="Fornecedor:" for="fornecedor" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+
+				<h:panelGroup>
+					<p:outputLabel value="Quantidade:" for="quantidade" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+
+				<h:panelGroup>
+					<p:outputLabel value="Data de Cadastro:" for="data" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+
+
+				<p:selectOneMenu id="secao" label="Seção" filter="true"
+					value="#{cadastroProdutoBean.produto.secao}">
+					<f:selectItem itemLabel="Selecione a Seção" />
+					<f:selectItems value="#{cadastroProdutoBean.listaSecoes}"
+						var="secao" itemLabel="#{secao.descricao}" itemValue="#{secao}" />
+				</p:selectOneMenu>
+
+				<p:selectOneMenu id="fornecedor" label="Fornecedor" filter="true"
+					value="#{cadastroProdutoBean.produto.fornecedor}">
+					<f:selectItem itemLabel="Selecione o Fornecedor" />
+					<f:selectItems value="#{cadastroProdutoBean.listaFornecedores}"
+						var="fornecedor" itemLabel="#{fornecedor.nomeFantasia}"
+						itemValue="#{fornecedor}" />
+				</p:selectOneMenu>
+
+				<p:spinner id="quantidade" min="0"
+					value="#{cadastroProdutoBean.produto.quantidadeEstoque}" />
+
+				<p:calendar id="data"
+					value="#{cadastroProdutoBean.produto.dataCadastro}"
+					label="Data de Cadastro" locale="pt_BR" pattern="dd/MM/yyyy"
+					navigator="true" mask="99/99/9999" />
+
+				<h:panelGroup>
+					<p:outputLabel value="Valor de Compra:" for="compra" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+
+				<h:panelGroup>
+					<p:outputLabel value="Valor de Venda:" for="venda" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+
+				<h:panelGroup>
+					<p:outputLabel value="Status:" for="status" />
+					<p:outputLabel value="*" styleClass="sinal-obrigatorio" />
+				</h:panelGroup>
+
+				<h:inputHidden />
+
+				<p:inputText id="compra" styleClass="moeda"
+					value="#{cadastroProdutoBean.produto.valorCompra}">
+					<f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+				</p:inputText>
+
+				<p:inputText id="venda" styleClass="moeda"
+					value="#{cadastroProdutoBean.produto.valorVenda}">
+					<f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+				</p:inputText>
+
+				<p:selectOneRadio id="status" label="Status"
+					value="#{cadastroProdutoBean.produto.status}">
+					<f:selectItems value="#{cadastroProdutoBean.status}" var="status"
+						itemLabel="#{status.descricao}" itemValue="#{status}" />
+				</p:selectOneRadio>
+			</h:panelGrid>
+		</h:form>
+		<p:outputLabel value="* campos obrigatórios"
+			styleClass="campo-obrigatorio" />
+
+	</ui:define>
+</ui:composition>

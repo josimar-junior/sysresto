@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
+
+<h:body>
+
+	<h:form prependId="false">
+
+
+		<p:panelMenu style="width:220px">
+			<sec:authorize access="hasAnyRole('GERENTE')">
+				<p:submenu label="Funcionário">
+					<p:menuitem value="Cadastrar" icon="ui-icon-disk"
+						outcome="/paginas/gerente/cadastro-funcionario.xhtml" />
+					<p:menuitem value="Consultar" icon="ui-icon-search"
+						outcome="/paginas/gerente/consulta-funcionario.xhtml?faces-redirect=true" />
+				</p:submenu>
+			</sec:authorize>
+			<sec:authorize access="hasAnyRole('GERENTE')">
+				<p:submenu label="Fornecedor">
+					<p:menuitem value="Cadastrar" icon="ui-icon-disk"
+						outcome="/paginas/gerente/cadastro-fornecedor.xhtml" />
+					<p:menuitem value="Consultar" icon="ui-icon-search"
+						outcome="/paginas/gerente/consulta-fornecedor.xhtml?faces-redirect=true" />
+				</p:submenu>
+			</sec:authorize>
+			<sec:authorize access="hasAnyRole('GERENTE')">
+				<p:submenu label="Produto">
+					<p:menuitem value="Cadastrar" icon="ui-icon-disk"
+						outcome="/paginas/gerente/cadastro-produto.xhtml" />
+					<p:menuitem value="Consultar" icon="ui-icon-search"
+						outcome="/paginas/gerente/consulta-produto.xhtml?faces-redirect=true" />
+					<p:submenu label="Seção">
+						<p:menuitem value="Cadastrar" icon="ui-icon-disk"
+							outcome="/paginas/gerente/cadastro-secao.xhtml" />
+						<p:menuitem value="Consultar" icon="ui-icon-search"
+							outcome="/paginas/gerente/consulta-secao.xhtml?faces-redirect=true" />
+					</p:submenu>
+				</p:submenu>
+			</sec:authorize>
+			<p:submenu label="Mesa">
+				<p:menuitem value="Cadastrar" icon="ui-icon-disk"
+					outcome="/paginas/todos/cadastro-mesa.xhtml" />
+				<p:menuitem value="Consultar" icon="ui-icon-search"
+					outcome="/paginas/todos/consulta-mesa.xhtml?faces-redirect=true" />
+
+			</p:submenu>
+			<sec:authorize access="hasAnyRole('GERENTE', 'GARCOM')">
+				<p:submenu label="Pedidos">
+					<p:menuitem value="Cadastrar" icon="ui-icon-disk"
+						outcome="/paginas/garcom/lista-mesas.xhtml" />
+					<p:menuitem value="Consultar" icon="ui-icon-search"
+						outcome="/paginas/garcom/consulta-pedido.xhtml" />
+				</p:submenu>
+			</sec:authorize>
+		</p:panelMenu>
+
+	</h:form>
+
+</h:body>
+
+</html>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/template/layout-padrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="body">
+		<h:form id="form">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton value="Pesquisar"
+						action="#{consultaMesaBean.pesquisar}" update="@form" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Cadastrar"
+						outcome="/paginas/todos/cadastro-mesa.xhtml" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:spacer height="10" />
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<h:panelGrid columns="2">
+				<p:outputLabel value="Número:" for="numero" />
+				<p:inputText id="numero" size="50"
+					value="#{consultaMesaBean.mesaFilter.numero}" />
+			</h:panelGrid>
+
+			<p:spacer height="10" />
+
+			<p:dataTable id="idTable" value="#{consultaMesaBean.mesas}"
+				var="mesa" paginator="true" rows="5" style="margin-right: 10px;"
+				rowsPerPageTemplate="5, 10, 15" lazy="true"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				currentPageReportTemplate="{currentPage} de {totalPages}"
+				paginatorPosition="bottom"
+				emptyMessage="Nenhum registro encontrado!" filterEvent="enter"
+				widgetVar="tableData"
+				rowStyleClass="#{empty row or row mod 2 ne 0 ? 'even-row' : 'odd-row'}"
+				rowIndexVar="row">
+				<f:facet name="header">Lista das Mesas</f:facet>
+				<f:facet name="footer">Fim da Lista</f:facet>
+
+				<p:column headerText="Número" style="width: 100px;">
+					<p:outputLabel value="#{mesa.numeroMesa}" />
+				</p:column>
+
+				<p:column headerText="Status Mesa" style="width: 50px;">
+					<p:outputLabel value="#{mesa.statusMesa.descricao}" />
+				</p:column>
+
+				<p:column headerText="Editar"
+					style="text-align: center; width: 10px;">
+					<p:button outcome="/paginas/todos/cadastro-mesa.xhtml"
+						icon="ui-icon-pencil" title="Editar">
+						<f:param name="mesa" value="#{mesa.id}" />
+					</p:button>
+				</p:column>
+				<p:column headerText="Excluir"
+					style="text-align: center; width: 10px;">
+					<p:commandButton icon="ui-icon-trash" title="Excluir"
+						oncomplete="PF('showConfirmDialog').show()" process="@this"
+						update=":form:showConfirm">
+						<f:setPropertyActionListener value="#{mesa}"
+							target="#{consultaMesaBean.mesaSelecionada}" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+
+			<p:confirmDialog header="Exclusão da Mesa"
+				message="tem certeza que deseja excluir a mesa de número #{consultaMesaBean.mesaSelecionada.numeroMesa}?"
+				widgetVar="showConfirmDialog" id="showConfirm" showEffect="fade"
+				hideEffect="explode">
+
+				<p:commandButton value="Não"
+					onclick="PF('showConfirmDialog').hide(); return false;"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				<p:commandButton value="Sim"
+					oncomplete="PF('showConfirmDialog').hide()"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+					action="#{consultaMesaBean.remover}" process="@this"
+					update=":form:idTable" />
+			</p:confirmDialog>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

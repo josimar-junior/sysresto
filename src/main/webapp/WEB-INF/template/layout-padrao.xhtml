@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title><h:outputText value="SysRestô" /></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<h:outputStylesheet library="css" name="style.css" />
+	<link rel="shortcut icon" type="image/x-icon"
+		href="#{facesContext.externalContext.requestContextPath}/resources/imagens/logo.png" />
+	<h:outputScript library="js" name="jquery.maskMoney.js" />
+	<h:outputScript library="js" name="locales.js" />
+</h:head>
+
+<h:body>
+	<p:ajaxStatus styleClass="ajax-status" onsuccess="configurarMoeda()">
+		<f:facet name="start">
+			<h:graphicImage library="imagens" name="loading.GIF" />
+		</f:facet>
+		<f:facet name="complete">
+			<h:outputText value="" />
+		</f:facet>
+	</p:ajaxStatus>
+	
+	<header>
+		<h:link outcome="/home.xhtml"> 
+		<p:graphicImage width="90" library="imagens"
+		name="logo.png" style="padding-left: 15px; padding-top: 10px;" /> </h:link>
+		 <p:outputLabel
+		value="SysRestô" styleClass="sysRestoLabelTop" />
+	<div id="welcome">
+		<h:outputText value="Bem-vindo, #{seguranca.nomeUsuario}" styleClass="texto-branco" />
+
+		<div id="logout"
+			style="float: right; padding-left: 10px; margin-top: -10px">
+			<h:form
+				onsubmit="action='#{request.contextPath}/j_spring_security_logout';">
+				<p:commandLink ajax="false" title="Sair do sistema">
+					<h:graphicImage width="30" library="imagens" name="logoutSair.png" />
+				</p:commandLink>
+			</h:form>
+		</div>
+	</div>
+	</header>
+
+	<div id="menu">
+		<ui:include src="menu-padrao.xhtml" />
+	</div>
+
+	<div id="conteudo">
+		<ui:insert name="body" />
+	</div>
+
+	<footer> <p:outputLabel
+		value="JLMP©2015. Todos os Direitos Reservados" /> </footer>
+
+	<script>
+		function configurarMoeda() {
+			$(".moeda").maskMoney({
+				decimal : ",",
+				thousands : ".",
+				allowZero : true
+			});
+		}
+		$(document).ready(function() {
+			configurarMoeda();
+		});
+	</script>
+</h:body>
+
+</html>

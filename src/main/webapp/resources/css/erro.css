@@ -1,0 +1,14 @@
+@CHARSET "UTF-8";
+
+body {
+	font-size: 20px;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0px;
+	font-weight: normal;
+}
+
+.centraliza-painel {
+	padding-top: 100px;	
+	padding-left: 420px;
+	width: 10px;
+}

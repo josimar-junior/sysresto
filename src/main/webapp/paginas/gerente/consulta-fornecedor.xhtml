@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/template/layout-padrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="body">
+		<h:form id="form">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton value="Pesquisar"
+						action="#{consultaFornecedorBean.pesquisar}" update="@form" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Cadastrar"
+						outcome="/paginas/gerente/cadastro-fornecedor.xhtml" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:spacer height="10px" />
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<h:panelGrid columns="2">
+				<p:outputLabel value="Razão Social:" for="razao-social" />
+				<p:inputText id="razao-social" size="50"
+					value="#{consultaFornecedorBean.fornecedorFilter.razaoSocial}" />
+				<p:outputLabel value="Nome Fantasia:" for="nome-fantasia" />
+				<p:inputText id="nome-fantasia" size="50"
+					value="#{consultaFornecedorBean.fornecedorFilter.nomeFantasia}" />
+				<p:spacer height="5px" />
+			</h:panelGrid>
+
+			<p:dataTable id="idTable" value="#{consultaFornecedorBean.fornecedores}"
+				var="fornecedor" paginator="true" rows="5"
+				style="margin-right: 10px;" rowsPerPageTemplate="5, 10, 15"
+				lazy="true"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				currentPageReportTemplate="{currentPage} de {totalPages}"
+				paginatorPosition="bottom"
+				emptyMessage="Nenhum registro encontrado!" filterEvent="enter"
+				widgetVar="tableData"
+				rowStyleClass="#{empty row or row mod 2 ne 0 ? 'even-row' : 'odd-row'}"
+				rowIndexVar="row">
+				<f:facet name="header">Lista dos Funcionários</f:facet>
+				<f:facet name="footer">Fim da Lista</f:facet>
+
+				<p:column headerText="Razão Social" style="width: 100px;">
+					<p:outputLabel value="#{fornecedor.razaoSocial}" />
+				</p:column>
+				<p:column headerText="Nome Fantasia" style="text-align: center; width: 100px;">
+					<p:outputLabel value="#{fornecedor.nomeFantasia}" />
+				</p:column>
+				<p:column headerText="CNPJ"
+					style="text-align: center; width: 35px;">
+					<p:outputLabel value="#{fornecedor.CNPJ}"/>
+				</p:column>
+
+				<p:column headerText="Telefone"
+					style="text-align: center; width: 25px;">
+					<p:outputLabel value="#{fornecedor.telefone}" />
+				</p:column>
+
+				<p:column headerText="Status"
+					style="text-align: center; width: 10px;">
+					<h:commandLink action="#{consultaFornecedorBean.modificarStatus}">
+						<h:graphicImage library="imagens"
+							name="ativo_#{fornecedor.status}.png" style="width: 24px" />
+						<f:setPropertyActionListener value="#{fornecedor}"
+							target="#{consultaFornecedorBean.fornecedor}" />
+					</h:commandLink>
+				</p:column>
+
+				<p:column headerText="Editar"
+					style="text-align: center; width: 10px;">
+					<p:button rendered="#{fornecedor.status eq 'ATIVO'}"
+						outcome="/paginas/gerente/cadastro-fornecedor.xhtml"
+						icon="ui-icon-pencil" title="Editar">
+						<f:param name="fornecedor" value="#{fornecedor.id}" />
+					</p:button>
+
+					<p:button rendered="#{fornecedor.status eq 'INATIVO'}"
+						disabled="true" icon="ui-icon-pencil"
+						title="Fornecedor está inativo!">
+
+					</p:button>
+				</p:column>
+				<p:column headerText="Excluir"
+					style="text-align: center; width: 10px;">
+					<p:commandButton rendered="#{fornecedor.status eq 'ATIVO'}"
+						icon="ui-icon-trash" title="Excluir"
+						oncomplete="PF('showConfirmDialog').show()" process="@this"
+						update=":form:showConfirm">
+						<f:setPropertyActionListener value="#{fornecedor}"
+							target="#{consultaFornecedorBean.fornecedorSelecionado}" />
+					</p:commandButton>
+
+					<p:commandButton rendered="#{fornecedor.status eq 'INATIVO'}"
+						disabled="true" icon="ui-icon-trash"
+						title="Fornecedor está inativo!">
+
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+
+			<p:confirmDialog header="Exclusão do Fornecedor"
+				message="tem certeza que deseja excluir o fornecedor #{consultaFornecedorBean.fornecedorSelecionado.razaoSocial}?"
+				widgetVar="showConfirmDialog" id="showConfirm" showEffect="fade"
+				hideEffect="explode">
+
+				<p:commandButton value="Não"
+					onclick="PF('showConfirmDialog').hide(); return false;"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				<p:commandButton value="Sim"
+					oncomplete="PF('showConfirmDialog').hide()"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+					action="#{consultaFuncionarioBean.remover}" process="@this"
+					update=":form:idTable" />
+			</p:confirmDialog>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

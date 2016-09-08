@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorio_pedidos" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c9a1f30d-560d-4585-ac2c-5d63a607707f">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="logo" class="java.awt.Image"/>
+	<queryString>
+		<![CDATA[SELECT
+     pedido.`data_pedido` AS pedido_data_pedido,
+     pedido.`forma_pagamento` AS pedido_forma_pagamento,
+     pedido.`statusPedido` AS pedido_statusPedido,
+     pedido.`valor_total` AS pedido_valor_total,
+     mesa.`numero_mesa` AS mesa_numero_mesa,
+     funcionario.`nome` AS funcionario_nome,
+     pedido.`data_pedido` AS pedido_data_pedido
+FROM
+     `funcionario` funcionario INNER JOIN `pedido` pedido ON funcionario.`id` = pedido.`funcionario_id`
+     INNER JOIN `mesa` mesa ON pedido.`mesa_id` = mesa.`id`]]>
+	</queryString>
+	<field name="dataPedido" class="java.sql.Date"/>
+	<field name="formaPagamento.descricao" class="java.lang.String"/>
+	<field name="statusPedido.descricao" class="java.lang.String"/>
+	<field name="valorTotal" class="java.math.BigDecimal"/>
+	<field name="mesa.numeroMesa" class="java.lang.String"/>
+	<field name="garcom.nome" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="61" uuid="57cb5b3e-1585-4cd2-8fd3-6e531cf41c62"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="26" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Relatório de Pedidos]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="28" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="80" height="28" uuid="7dae9265-4306-45a4-be56-c6c36b2e14d4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="0" width="171" height="27" uuid="d9923b46-0d04-4e7f-9e25-5e0d67b33d6d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[GARÇOM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="495" y="0" width="60" height="27" uuid="9e9228b4-5473-42ad-b5fa-9f9160c78e60"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="352" y="0" width="89" height="27" uuid="eefff79c-3395-4189-80aa-904d3b0ed08f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[STATUS]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="27" width="554" height="1" uuid="f7232585-97c6-4a6d-b8b0-767a7e0b0bd8"/>
+			</line>
+			<staticText>
+				<reportElement x="251" y="0" width="101" height="27" uuid="ce0f8603-5d76-43da-b76c-5a2eb5dfe163"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PAGAMENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="441" y="1" width="54" height="27" uuid="d5c327ef-cbf0-473c-9019-b1a9005a36dc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[MESA]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="1" y="0" width="79" height="25" uuid="2f30b28d-0fb6-467b-b824-6d2394aefdf7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{dataPedido}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="0" width="171" height="25" uuid="fbaba80d-27b1-4091-a3ea-888dc8b31a75"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{garcom.nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="251" y="0" width="101" height="25" uuid="f41e2d1e-d8ac-48b2-9345-29635b1cd857"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{formaPagamento.descricao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="441" y="0" width="54" height="25" uuid="fcce4b8a-ed94-4f5f-958c-fe3ac0498cbf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{mesa.numeroMesa}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="495" y="0" width="60" height="25" uuid="c2c93117-580e-43c2-af26-031b41d7109d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{valorTotal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="352" y="0" width="89" height="25" uuid="c84b516a-9b8b-4566-ac0e-a7dd387d99ba"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{statusPedido.descricao}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="50">
+			<textField evaluationTime="Report">
+				<reportElement x="455" y="30" width="100" height="20" uuid="1d3b83ac-6eb1-4c8c-ac15-de910984d4c7"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>
